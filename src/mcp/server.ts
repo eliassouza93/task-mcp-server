@@ -1,8 +1,11 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 
 import { z } from "zod";
 
 async function main() {
+  console.log("🚀 MCP Server iniciado");
+
   const server = new McpServer({
     name: "task-mcp",
     version: "1.0.0",
@@ -40,9 +43,7 @@ async function main() {
     }
   );
 
-  // transport (stdio é o mais comum usado)
-  // esse modelo de exportação aqui é para TYPE MODULE
-  //const transport = new StdioServerTransport();
-  //await server.connect(transport);
+  const transport = new StdioServerTransport();
+  await server.connect(transport);
 }
 main();

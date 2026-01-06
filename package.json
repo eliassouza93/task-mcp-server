@@ -6,10 +6,10 @@
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   },
-  
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "migrate": "knex migrate:latest"
+    "migrate": "knex migrate:latest",
+    "mcp": "tsx src/mcp/client.ts"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.25.1",
