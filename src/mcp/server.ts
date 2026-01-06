@@ -17,11 +17,13 @@ async function main() {
   });
   // tool de listar tarefas
   server.tool("list_tasks", "lista todas as tarefas", {}, async () => {
+    const res = await fetch("http://localhost:3000/");
+    const tasks = await res.json();
     return {
       content: [
         {
           type: "text",
-          text: "aqui futuramente virão as tarefas do banco",
+          text: JSON.stringify(tasks, null, 2),
         },
       ],
     };
