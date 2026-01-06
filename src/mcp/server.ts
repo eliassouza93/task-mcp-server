@@ -28,7 +28,7 @@ async function main() {
       ],
     };
   });
-  //aqui chama a api com fetch
+  //lista tarefa por id
   server.tool(
     "get_task_by_id",
     "busca uma tarefa pelo ID",
@@ -36,7 +36,7 @@ async function main() {
       id: z.string().describe("UUID da tarefa"),
     },
     async ({ id }) => {
-      const res = await fetch(`http://localhost:3000/task/${id}`);
+      const res = await fetch(`http://localhost:3000/${id}`);
       const task = await res.json();
 
       return {
@@ -86,6 +86,45 @@ async function main() {
               type: "text",
               text: `erro ao gerar resumo: ${error.message}`,
             },
+          ],
+        };
+      }
+    }
+  );
+  // cria tarefa
+  server.tool(
+    "create_task",
+    "cria uma nova tarefa",
+    {
+      title: z.string().min(1).describe("Titulo da tarefa"),
+      description: z.string().optional().describe("Descrição da tarefa"),
+    },
+    async ({ title, description }) => {
+      try {
+        const res = await fetch("http://localhost:3000/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ title, description }),
+        });
+        if (!res.ok) {
+          const errorText = await res.text();
+          throw new Error(errorText);
+        }
+        const task = await res.json();
+        return {
+          content: [
+            {
+              type: "text",
+              text: JSON.stringify(task, null, 2),
+            },
+          ],
+        };
+      } catch (error: any) {
+        return {
+          content: [
+            { type: "text", text: `erro ao criar tarefa: ${error.message}` },
           ],
         };
       }
