@@ -29,5 +29,25 @@ Cada ferramenta possui:
 
 ## Estrutura do Projeto
 
--npm install
--npm run dev
+
+---
+
+## Tecnologias Utilizadas
+
+- **Node.js**
+- **TypeScript**
+- **Express**
+- **SQLite**
+- **Knex**
+- **Zod**
+- **Model Context Protocol SDK**
+- **tsx** (execução de TypeScript em tempo de desenvolvimento)
+
+---
+
+## Execução do Projeto
+
+### Instalação das Dependências
+ 
+npm install
+
