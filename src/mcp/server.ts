@@ -130,6 +130,90 @@ async function main() {
       }
     }
   );
+  //editar uma tarefa
+  server.tool(
+    "updated_task",
+    "editar tarefa",
+    {
+      id: z.string().describe("UUID da tarefa a ser editada"),
+      title: z.string().optional().describe("novo titulo da tarefa"),
+      description: z.string().optional().describe("nova descrição da tarefa"),
+      completed: z.boolean().optional().describe("status da tarefa"),
+    },
+    async ({ id, title, description, completed }) => {
+      try {
+        const res = await fetch(`http://localhost:3000/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            title,
+            description,
+            completed,
+          }),
+        });
+        if (!res.ok) {
+          const errorText = await res.text();
+          throw new Error(errorText || `erro HTTP ${res.status}`);
+        }
+
+        const updatedTask = await res.json();
+
+        return {
+          content: [
+            { type: "text", text: JSON.stringify(updatedTask, null, 2) },
+          ],
+        };
+      } catch (error: any) {
+        return {
+          content: [
+            {
+              type: "text",
+              text: `erro ao editar tarefa: ${error.message}`,
+            },
+          ],
+        };
+      }
+    }
+  );
+
+  //deletar tarefa
+  server.tool(
+    "delete_task",
+    "remover tarefa",
+    {
+      id: z.string().describe("UUID da tarefa a ser removida"),
+    },
+    async ({ id }) => {
+      try {
+        const res = await fetch(`http://localhost:3000/${id}`, {
+          method: "DELETE",
+        });
+        if (!res.ok) {
+          const errorTxt = await res.text();
+          throw new Error(errorTxt || `erro HTTP ${res.status}`);
+        }
+        return {
+          content: [
+            {
+              type: "text",
+              text: `tarefa ${id} removida com sucesso!`,
+            },
+          ],
+        };
+      } catch (error: any) {
+        return {
+          content: [
+            {
+              type: "text",
+              text: `erro ao tentar deletar tarefa ${error.message}`,
+            },
+          ],
+        };
+      }
+    }
+  );
 
   const transport = new StdioServerTransport();
   await server.connect(transport);
