@@ -13,13 +13,6 @@ async function main() {
       args: ["tsx", "src/mcp/server.ts"],
     })
   );
-
-  const result = await client.callTool({
-    name: "list_tasks",
-    arguments: {},
-  });
-
-  console.log(result);
 }
 
 main();

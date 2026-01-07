@@ -11,5 +11,5 @@ app.use((err: any, req: any, res: any, next: any) => {
 });
 
 app.listen(3000, () => {
-  console.log("Servidor rodando na porta 3000");
+  console.log("porta 3000");
 });
